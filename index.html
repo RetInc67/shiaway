@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090909">
+<title>ShiaWay — Шиитский исламский портал</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="bg-glow"></div>
+
+<header class="header">
+
+  <a class="brand" href="#" aria-label="ShiaWay">
+    <span class="brand-mark"><img src="assets/shiaway-avatar.jpg" alt="Логотип ShiaWay"></span>
+    <span>SHIA<span>WAY</span></span>
+  </a>
+
+  <nav class="nav" aria-label="Основная навигация">
+  <a href="#library" data-show-section="library">Библиотека</a>
+  <a href="#favorites" data-show-section="favorites">Избранное</a>
+  <a href="#articles" data-show-section="articles">Статьи</a>
+  <a href="#about" data-show-section="about">О библиотеке</a>
+</nav>
+
+  <div class="header-actions" id="headerActions">
+
+    <button class="mobile-menu" id="mobileMenu" aria-label="Открыть меню" aria-expanded="false">☰</button>
+
+    <div class="mobile-panel" id="mobilePanel">
+
+      <a href="#library" class="mobile-panel-link" data-show-section="library">Библиотека</a>
+      <a href="#favorites" class="mobile-panel-link" data-show-section="favorites">Избранное</a>
+      <a href="#articles" class="mobile-panel-link" data-show-section="articles">Статьи</a>
+      <a href="#about" class="mobile-panel-link" data-show-section="about">О библиотеке</a>
+
+      <div class="mobile-panel-divider"></div>
+
+      <a href="https://t.me/shiaaway" target="_blank" rel="noopener noreferrer" class="mobile-panel-link">Telegram канал</a>
+      <a href="https://shiaisnad.ru" target="_blank" rel="noopener noreferrer" class="mobile-panel-link">Сайт о науке передатчиков</a>
+      <a href="https://t.me/shiaway_support_bot" target="_blank" rel="noopener noreferrer" class="mobile-panel-link">Обратная связь</a>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<main>
+
+
+<section class="hero">
+
+  <div class="hero-content">
+
+    <div class="eyebrow">
+      <i></i> Шиитский исламский портал
+    </div>
+
+    <h1>
+      Знания без<br>
+      <em>границ.</em>
+    </h1>
+
+    <p>
+      Классические труды шиитской и суннитской традиций в одной библиотеке.
+    </p>
+
+    <div class="hero-stats">
+
+      <div class="hero-stat">
+        <b>2</b>
+        <span>школы</span>
+      </div>
+
+      <div class="hero-stat-divider"></div>
+
+      <div class="hero-stat">
+        <b>6</b>
+        <span>разделов</span>
+      </div>
+
+      <div class="hero-stat-divider"></div>
+
+      <div class="hero-stat">
+        <b>PDF</b>
+        <span>читать онлайн</span>
+      </div>
+
+    </div>
+
+    <div class="hero-buttons">
+
+<a class="hero-btn hero-btn-primary" href="#library" data-show-section="library">
+<span class="hero-btn-icon">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+    <path d="M4 19.5V4.5C4 3.67 4.67 3 5.5 3H18.5C19.33 3 20 3.67 20 4.5V19.5C20 20.33 19.33 21 18.5 21H5.5C4.67 21 4 20.33 4 19.5Z" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M8 3V21" stroke="currentColor" stroke-width="1.6"/>
+  </svg>
+</span>
+Открыть библиотеку
+</a>
+
+<a class="hero-btn articles-hero-btn" href="#articles" data-show-section="articles">
+Статьи <span>✦</span>
+</a>
+
+<a class="hero-btn hero-btn-ghost" href="https://t.me/shiaaway" target="_blank" rel="noopener noreferrer">
+Telegram
+</a>
+
+</div>
+
+    <div class="hero-cats">
+
+      <a class="hero-cat-chip" href="#library" data-show-section="library">Хадисы</a>
+      <a class="hero-cat-chip" href="#library" data-show-section="library">Фикх</a>
+      <a class="hero-cat-chip" href="#library" data-show-section="library">Тафсиры</a>
+      <a class="hero-cat-chip" href="#library" data-show-section="library">Акида</a>
+      <a class="hero-cat-chip" href="#library" data-show-section="library">История</a>
+
+    </div>
+  </div>
+
+</section>
+
+
+
+<section id="library" class="library app-section-hidden">
+
+
+<div class="section-head">
+
+  <div>
+
+    <div class="eyebrow">
+      Каталог
+    </div>
+
+    <h2>
+      Библиотека
+    </h2>
+
+  </div>
+
+
+  <div class="results" id="results"></div>
+
+
+</div>
+
+
+
+<div class="toolbar">
+
+
+<div class="tradition-tabs">
+
+<button class="tradition active" data-tradition="all">
+Все книги
+</button>
+
+
+<button class="tradition" data-tradition="shia">
+Шиитские книги
+</button>
+
+
+<button class="tradition" data-tradition="sunni">
+Суннитские книги
+</button>
+
+
+</div>
+
+
+
+<label class="search">
+
+<span>⌕</span>
+
+<input 
+id="search"
+data-search
+placeholder="Поиск по названию или автору..."
+autocomplete="off">
+
+<kbd>⌘ K</kbd>
+
+</label>
+
+
+</div>
+
+
+
+
+<div class="categories" id="categories">
+
+
+<button class="cat active" data-cat="all">
+Все
+</button>
+
+
+<button class="cat" data-cat="hadith">
+Хадисы
+</button>
+
+
+<button class="cat" data-cat="fiqh">
+Фикх
+</button>
+
+
+<button class="cat" data-cat="tafsir">
+Тафсиры
+</button>
+
+
+<button class="cat" data-cat="aqida">
+Акида
+</button>
+
+
+<button class="cat" data-cat="history">
+История
+</button>
+
+
+<button class="cat" data-cat="ethics">
+Нравственность
+</button>
+
+
+<button class="cat" data-cat="favorites">
+★ Избранное
+</button>
+
+
+</div>
+
+
+
+<div class="books-grid" id="books"></div>
+
+
+<div class="empty" id="empty" hidden>
+
+<div class="empty-icon">
+⌕
+</div>
+
+<h3>
+Ничего не найдено
+</h3>
+
+<p>
+Попробуй изменить запрос или категорию.
+</p>
+
+</div>
+
+
+</section>
+
+
+
+<!-- ИЗБРАННОЕ -->
+
+<section id="favorites" class="favorites app-section-hidden">
+
+
+<div class="section-head">
+
+  <div>
+
+    <div class="eyebrow">
+      Личное
+    </div>
+
+    <h2>
+      Избранные книги
+    </h2>
+
+  </div>
+
+
+  <div class="results" id="favResults"></div>
+
+
+</div>
+
+
+
+<div class="books-grid" id="favBooks"></div>
+
+
+<div class="empty" id="favEmpty" hidden>
+
+<div class="empty-icon">
+★
+</div>
+
+<h3>
+Пока пусто
+</h3>
+
+<p>
+Нажмите на звёздочку у книги, чтобы добавить её в избранное.
+</p>
+
+</div>
+
+
+</section>
+
+
+
+
+<!-- СТАТЬИ -->
+<section id="articles" class="articles app-section-hidden">
+  <div class="articles-shell">
+
+    <div class="articles-main">
+      <div class="section-head articles-head">
+        <div>
+          <div class="eyebrow">ShiaWay</div>
+          <h2>Категории статей</h2>
+        </div>
+        <div class="article-count" id="articleCount"></div>
+      </div>
+
+      <div class="article-search-wrap">
+        <span><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input id="articleSearch" placeholder="Поиск по статьям и категориям..." autocomplete="off">
+        <button id="articleSearchClear" type="button" hidden>×</button>
+      </div>
+
+      <div class="article-breadcrumbs" id="articleBreadcrumbs"></div>
+      <div class="article-grid" id="articleFolders"></div>
+      <div class="article-files" id="articleFiles" hidden></div>
+      <div class="articles-empty" id="articlesEmpty" hidden>
+        <span><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><h3>Ничего не найдено</h3><p>Попробуйте изменить запрос.</p>
+      </div>
+    </div>
+
+    <aside class="site-sidebar">
+      
+
+      <div class="sidebar-block">
+        <h3>Рубрики</h3>
+        <select class="sidebar-select" id="sidebarRubrics">
+          <option value="">Выберите рубрику</option>
+        </select>
+      </div>
+
+      <div class="sidebar-block">
+        <h3>Последние записи</h3>
+        <ul class="sidebar-list" id="sidebarRecent"></ul>
+      </div>
+    </aside>
+
+  </div>
+</section>
+
+
+
+<section id="about" class="about app-section-hidden">
+
+
+<div>
+
+<div class="eyebrow">
+ShiaWay
+</div>
+
+
+<h2>
+Исламское наследие<br>
+в одном месте.
+</h2>
+
+
+</div>
+
+
+
+<p>
+Библиотека создана для удобного поиска и чтения классических трудов. Здесь собраны книги разных направлений исламской традиции, разделённые по тематике.
+</p>
+
+
+
+</section>
+
+
+</main>
+
+
+
+<footer class="footer app-section-hidden">
+
+<span>
+ShiaWay
+</span>
+
+
+<span>
+Библиотека исламских трудов
+</span>
+
+
+</footer>
+
+
+
+<script src="books.js"></script>
+
+<script src="app.js"></script>
+
+
+</body>
+</html>

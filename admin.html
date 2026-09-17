@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shia Way — Админ-панель</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Общие */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f2f5;
+    }
+
+    /* Контейнер */
+    .admin-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Шапка */
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0 20px;
+      border-bottom: 2px solid #e8e8e8;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .admin-header h1 {
+      font-size: 26px;
+      color: #1e293b;
+    }
+
+    /* Логин */
+    .admin-login {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 40px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+    .admin-login h2 {
+      margin-bottom: 20px;
+      color: #0f172a;
+      font-size: 24px;
+    }
+    .admin-login input {
+      width: 100%;
+      padding: 12px 16px;
+      margin: 10px 0;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 16px;
+      background: #f8fafc;
+      transition: 0.2s;
+    }
+    .admin-login input:focus {
+      outline: none;
+      border-color: #1e293b;
+      background: #ffffff;
+    }
+    .admin-login button {
+      width: 100%;
+      padding: 12px;
+      background: #0f172a;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .admin-login button:hover {
+      background: #1e293b;
+    }
+    #loginError {
+      color: #ef4444;
+      margin-top: 12px;
+      display: none;
+      font-size: 14px;
+    }
+
+    /* Статистика */
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+    .stat-card {
+      background: #ffffff;
+      padding: 20px 16px;
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      border: 1px solid #eef2f6;
+    }
+    .stat-card h3 {
+      font-size: 34px;
+      margin: 0;
+      color: #0f172a;
+      font-weight: 700;
+    }
+    .stat-card p {
+      margin: 6px 0 0;
+      color: #64748b;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Вкладки */
+    .admin-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .admin-tab {
+      padding: 10px 24px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 15px;
+      color: #334155;
+      transition: 0.2s;
+    }
+    .admin-tab:hover {
+      background: #f1f5f9;
+    }
+    .admin-tab.active {
+      background: #0f172a;
+      color: white;
+      border-color: #0f172a;
+    }
+
+    /* Контент */
+    .admin-content {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      border: 1px solid #eef2f6;
+    }
+
+    /* Таблица */
+    .admin-table {
+      width: 100%;
+      overflow-x: auto;
+    }
+    .admin-table table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .admin-table th {
+      background: #f8fafc;
+      padding: 12px 14px;
+      text-align: left;
+      font-weight: 600;
+      color: #1e293b;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .admin-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #1e293b;
+    }
+    .admin-table tr:hover td {
+      background: #fafbfc;
+    }
+
+    /* Кнопки */
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: 0.15s;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: #0f172a;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #1e293b;
+    }
+    .btn-success {
+      background: #059669;
+      color: white;
+    }
+    .btn-success:hover {
+      background: #047857;
+    }
+    .btn-danger {
+      background: #dc2626;
+      color: white;
+    }
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+    .btn-warning {
+      background: #d97706;
+      color: white;
+    }
+    .btn-warning:hover {
+      background: #b45309;
+    }
+    .btn-outline {
+      background: transparent;
+      color: #475569;
+      border: 1px solid #d1d5db;
+    }
+    .btn-outline:hover {
+      background: #f1f5f9;
+    }
+
+    /* Панель инструментов */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+    .toolbar-left {
+      display: flex;
+      gap: 12px;
+      flex: 1;
+      min-width: 200px;
+    }
+    .toolbar-left input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 14px;
+      background: #f8fafc;
+      min-width: 160px;
+      transition: 0.2s;
+    }
+    .toolbar-left input:focus {
+      outline: none;
+      border-color: #0f172a;
+      background: #ffffff;
+    }
+
+    /* Модалка */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      overflow-y: auto;
+      padding: 30px 16px;
+    }
+    .modal-content {
+      background: white;
+      max-width: 780px;
+      margin: 40px auto;
+      padding: 32px 36px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      animation: modalFade 0.2s ease;
+    }
+    @keyframes modalFade {
+      from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .modal-content h2 {
+      margin-bottom: 24px;
+      color: #0f172a;
+      font-size: 24px;
+    }
+    .modal-content form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .modal-content label {
+      font-weight: 500;
+      color: #1e293b;
+      font-size: 14px;
+    }
+    .modal-content input,
+    .modal-content select,
+    .modal-content textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 14px;
+      background: #f8fafc;
+      transition: 0.2s;
+      font-family: inherit;
+    }
+    .modal-content input:focus,
+    .modal-content select:focus,
+    .modal-content textarea:focus {
+      outline: none;
+      border-color: #0f172a;
+      background: #ffffff;
+    }
+    .modal-content textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid #eef2f6;
+    }
+
+    /* Тома */
+    .volume-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: center;
+      background: #f8fafc;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+    .volume-group input {
+      background: white;
+    }
+    .btn-add-volume {
+      margin-top: 6px;
+      padding: 8px 18px;
+      border: 1px dashed #94a3b8;
+      background: transparent;
+      border-radius: 30px;
+      cursor: pointer;
+      color: #475569;
+      font-size: 13px;
+      font-weight: 500;
+      transition: 0.2s;
+      width: fit-content;
+    }
+    .btn-add-volume:hover {
+      border-color: #0f172a;
+      color: #0f172a;
+      background: #f1f5f9;
+    }
+
+    /* Утилиты */
+    .hidden {
+      display: none !important;
+    }
+    .text-muted {
+      color: #94a3b8;
+      font-size: 14px;
+      padding: 20px 0;
+    }
+
+    /* Адаптив */
+    @media (max-width: 640px) {
+      .admin-container {
+        padding: 12px;
+      }
+      .admin-content {
+        padding: 16px;
+      }
+      .modal-content {
+        padding: 20px 18px;
+        margin: 10px;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .volume-group {
+        grid-template-columns: 1fr;
+      }
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .toolbar-left {
+        flex-direction: column;
+      }
+      .admin-header h1 {
+        font-size: 20px;
+      }
+      .admin-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container" id="adminApp">
+    <!-- СТРАНИЦА ВХОДА -->
+    <div id="loginPage" class="admin-login">
+      <h2>🔐 Вход в админ-панель</h2>
+      <input type="password" id="passwordInput" placeholder="Введите пароль" />
+      <button onclick="login()">Войти</button>
+      <p id="loginError">Неверный пароль</p>
+    </div>
+
+    <!-- АДМИН-ПАНЕЛЬ -->
+    <div id="adminPanel" class="hidden">
+      <!-- Шапка -->
+      <div class="admin-header">
+        <h1>📚 Shia Way — Админ-панель</h1>
+        <button class="btn btn-danger" onclick="logout()">Выйти</button>
+      </div>
+
+      <!-- Статистика -->
+      <div class="admin-stats" id="stats">
+        <div class="stat-card">
+          <h3 id="totalBooks">0</h3>
+          <p>Всего книг</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="totalAuthors">0</h3>
+          <p>Всего авторов</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="totalCategories">0</h3>
+          <p>Категорий</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="totalVolumes">0</h3>
+          <p>Всего томов</p>
+        </div>
+      </div>
+
+      <!-- Вкладки -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="books">📖 Книги</button>
+        <button class="admin-tab" data-tab="authors">✍️ Авторы</button>
+        <button class="admin-tab" data-tab="categories">🏷️ Категории</button>
+      </div>
+
+      <!-- Контент -->
+      <div class="admin-content" id="adminContent">
+        <!-- Вкладка: Книги -->
+        <div id="tab-books">
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <input type="text" id="bookSearch" placeholder="🔍 Поиск книг..." oninput="renderBooks()" />
+            </div>
+            <button class="btn btn-success" onclick="openAddBook()">➕ Добавить книгу</button>
+          </div>
+          <div id="booksList" class="admin-table"></div>
+        </div>
+
+        <!-- Вкладка: Авторы -->
+        <div id="tab-authors" class="hidden">
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <input type="text" id="authorSearch" placeholder="🔍 Поиск авторов..." oninput="renderAuthors()" />
+            </div>
+            <button class="btn btn-success" onclick="openAddAuthor()">➕ Добавить автора</button>
+          </div>
+          <div id="authorsList" class="admin-table"></div>
+        </div>
+
+        <!-- Вкладка: Категории -->
+        <div id="tab-categories" class="hidden">
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <span style="font-weight:600;color:#1e293b;align-self:center;">Управление категориями</span>
+            </div>
+            <button class="btn btn-success" onclick="openAddCategory()">➕ Добавить категорию</button>
+          </div>
+          <div id="categoriesList" class="admin-table"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <h2 id="modalTitle">Добавить книгу</h2>
+        <form id="modalForm">
+          <div id="modalBody"></div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-outline" onclick="closeModal()">Отмена</button>
+            <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    //  ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
+    // ============================================================
+    const API_URL = '/api';
+    let token = localStorage.getItem('adminToken');
+    let books = [];
+    let authors = [];
+    let categories = [];
+    let currentTab = 'books';
+    let editingId = null;
+    let editingType = null; // 'book' | 'author' | 'category'
+
+    // ============================================================
+    //  АВТОРИЗАЦИЯ
+    // ============================================================
+    async function login() {
+      const password = document.getElementById('passwordInput').value.trim();
+      if (!password) return;
+
+      try {
+        const res = await fetch(API_URL + '/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password }),
+        });
+        const data = await res.json();
+
+        if (data.token) {
+          token = data.token;
+          localStorage.setItem('adminToken', token);
+          document.getElementById('loginPage').classList.add('hidden');
+          document.getElementById('adminPanel').classList.remove('hidden');
+          document.getElementById('loginError').style.display = 'none';
+          loadAllData();
+        } else {
+          document.getElementById('loginError').style.display = 'block';
+        }
+      } catch (_) {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('adminToken');
+      token = null;
+      document.getElementById('loginPage').classList.remove('hidden');
+      document.getElementById('adminPanel').classList.add('hidden');
+      document.getElementById('passwordInput').value = '';
+      document.getElementById('loginError').style.display = 'none';
+    }
+
+    // Если токен уже есть — сразу показываем админку
+    if (token) {
+      document.getElementById('loginPage').classList.add('hidden');
+      document.getElementById('adminPanel').classList.remove('hidden');
+      loadAllData();
+    }
+
+    // ============================================================
+    //  ЗАГРУЗКА ДАННЫХ
+    // ============================================================
+    async function loadAllData() {
+      try {
+        await Promise.all([loadBooks(), loadAuthors(), loadCategories()]);
+        updateStats();
+        renderCurrentTab();
+      } catch (err) {
+        console.error('Ошибка загрузки данных:', err);
+      }
+    }
+
+    async function loadBooks() {
+      const res = await fetch(API_URL + '/books', {
+        headers: { Authorization: 'Bearer ' + token },
+      });
+      books = await res.json();
+      return books;
+    }
+
+    async function loadAuthors() {
+      const res = await fetch(API_URL + '/authors', {
+        headers: { Authorization: 'Bearer ' + token },
+      });
+      authors = await res.json();
+      return authors;
+    }
+
+    async function loadCategories() {
+      const res = await fetch(API_URL + '/categories', {
+        headers: { Authorization: 'Bearer ' + token },
+      });
+      categories = await res.json();
+      return categories;
+    }
+
+    // ============================================================
+    //  СТАТИСТИКА
+    // ============================================================
+    function updateStats() {
+      document.getElementById('totalBooks').textContent = books.length;
+      document.getElementById('totalAuthors').textContent = authors.length;
+      document.getElementById('totalCategories').textContent = categories.length;
+      let vols = 0;
+      books.forEach((b) => {
+        vols += (b.volumes || []).length || 1;
+      });
+      document.getElementById('totalVolumes').textContent = vols;
+    }
+
+    // ============================================================
+    //  ВКЛАДКИ
+    // ============================================================
+    document.querySelectorAll('.admin-tab').forEach((btn) => {
+      btn.addEventListener('click', function () {
+        const tab = this.dataset.tab;
+        switchTab(tab);
+      });
+    });
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.admin-tab').forEach((el) => el.classList.remove('active'));
+      document.querySelector('.admin-tab[data-tab="' + tab + '"]').classList.add('active');
+
+      document.getElementById('tab-books').classList.add('hidden');
+      document.getElementById('tab-authors').classList.add('hidden');
+      document.getElementById('tab-categories').classList.add('hidden');
+
+      document.getElementById('tab-' + tab).classList.remove('hidden');
+      renderCurrentTab();
+    }
+
+    function renderCurrentTab() {
+      if (currentTab === 'books') renderBooks();
+      else if (currentTab === 'authors') renderAuthors();
+      else if (currentTab === 'categories') renderCategories();
+    }
+
+    // ============================================================
+    //  РЕНДЕР: КНИГИ
+    // ============================================================
+    function renderBooks() {
+      const search = document.getElementById('bookSearch').value.toLowerCase().trim();
+      const filtered = books.filter((b) => {
+        const title = (b.title || '').toLowerCase();
+        const author = (b.author || '').toLowerCase();
+        return title.includes(search) || author.includes(search);
+      });
+
+      if (!filtered.length) {
+        document.getElementById('booksList').innerHTML = '<p class="text-muted">📭 Книг не найдено</p>';
+        return;
+      }
+
+      let html = `<table>
+        <thead>
+          <tr>
+            <th>Название</th>
+            <th>Автор</th>
+            <th>Категория</th>
+            <th>Тип</th>
+            <th>Томов</th>
+            <th style="text-align:right;">Действия</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+      filtered.forEach((book) => {
+        const authorName = authors.find((a) => a.id === book.authorId)?.name || book.author || '—';
+        const volCount = (book.volumes || []).length || 1;
+        html += `<tr>
+          <td><strong>${escapeHtml(book.title || 'Без названия')}</strong></td>
+          <td>${escapeHtml(authorName)}</td>
+          <td>${escapeHtml(book.category || '—')}</td>
+          <td>${escapeHtml(book.type || 'Шиитская')}</td>
+          <td>${volCount}</td>
+          <td style="text-align:right;white-space:nowrap;">
+            <button class="btn btn-warning" onclick="editBook('${book.id}')" style="margin-right:4px;">✏️</button>
+            <button class="btn btn-danger" onclick="deleteBook('${book.id}')">🗑️</button>
+          </td>
+        </tr>`;
+      });
+
+      html += `</tbody></table>`;
+      document.getElementById('booksList').innerHTML = html;
+    }
+
+    // ============================================================
+    //  РЕНДЕР: АВТОРЫ
+    // ============================================================
+    function renderAuthors() {
+      const search = document.getElementById('authorSearch').value.toLowerCase().trim();
+      const filtered = authors.filter((a) => (a.name || '').toLowerCase().includes(search));
+
+      if (!filtered.length) {
+        document.getElementById('authorsList').innerHTML = '<p class="text-muted">📭 Авторов не найдено</p>';
+        return;
+      }
+
+      let html = `<table>
+        <thead>
+          <tr>
+            <th>Имя</th>
+            <th>Описание</th>
+            <th style="text-align:right;">Действия</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+      filtered.forEach((author) => {
+        html += `<tr>
+          <td><strong>${escapeHtml(author.name || 'Без имени')}</strong></td>
+          <td>${escapeHtml(author.bio || '—')}</td>
+          <td style="text-align:right;white-space:nowrap;">
+            <button class="btn btn-warning" onclick="editAuthor('${author.id}')" style="margin-right:4px;">✏️</button>
+            <button class="btn btn-danger" onclick="deleteAuthor('${author.id}')">🗑️</button>
+          </td>
+        </tr>`;
+      });
+
+      html += `</tbody></table>`;
+      document.getElementById('authorsList').innerHTML = html;
+    }
+
+    // ============================================================
+    //  РЕНДЕР: КАТЕГОРИИ
+    // ============================================================
+    function renderCategories() {
+      if (!categories.length) {
+        document.getElementById('categoriesList').innerHTML = '<p class="text-muted">📭 Категорий нет</p>';
+        return;
+      }
+
+      let html = `<table>
+        <thead>
+          <tr>
+            <th>Категория</th>
+            <th>Книг</th>
+            <th style="text-align:right;">Действия</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+      categories.forEach((cat) => {
+        const count = books.filter((b) => b.category === cat).length;
+        html += `<tr>
+          <td><strong>${escapeHtml(cat)}</strong></td>
+          <td>${count}</td>
+          <td style="text-align:right;">
+            <button class="btn btn-danger" onclick="deleteCategory('${escapeHtml(cat)}')">🗑️</button>
+          </td>
+        </tr>`;
+      });
+
+      html += `</tbody></table>`;
+      document.getElementById('categoriesList').innerHTML = html;
+    }
+
+    // ============================================================
+    //  ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+    // ============================================================
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"]/g, function (m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        if (m === '"') return '&quot;';
+        return m;
+      });
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+      document.getElementById('modalForm').reset();
+      editingId = null;
+      editingType = null;
+    }
+
+    // Закрытие модалки по клику вне контента
+    document.getElementById('modal').addEventListener('click', function (e) {
+      if (e.target === this) closeModal();
+    });
+
+    // ============================================================
+    //  ФОРМА: КНИГА
+    // ============================================================
+    function getBookFormHTML(book) {
+      const authorOpts = authors
+        .map((a) => `<option value="${a.id}" ${book?.authorId === a.id ? 'selected' : ''}>${escapeHtml(a.name)}</option>`)
+        .join('');
+
+      const catOpts = categories
+        .map((c) => `<option value="${c}" ${book?.category === c ? 'selected' : ''}>${escapeHtml(c)}</option>`)
+        .join('');
+
+      const volumesHTML = (book?.volumes || []).map((v, i) => `
+        <div class="volume-group">
+          <input type="text" placeholder="Название тома" value="${escapeHtml(v.title || '')}" class="vol-title" />
+          <input type="text" placeholder="Ссылка на том (PDF, Archive.org...)" value="${escapeHtml(v.link || '')}" class="vol-link" />
+        </div>
+      `).join('');
+
+      return `
+        <input type="text" id="f_title" placeholder="Название книги *" value="${escapeHtml(book?.title || '')}" required />
+
+        <div class="form-row">
+          <select id="f_authorId">
+            <option value="">— Выберите автора —</option>
+            ${authorOpts}
+          </select>
+          <input type="text" id="f_author" placeholder="Или введите имя автора" value="${escapeHtml(book?.author || '')}" />
+        </div>
+
+        <select id="f_category">
+          <option value="">— Выберите категорию —</option>
+          ${catOpts}
+        </select>
+
+        <div class="form-row">
+          <input type="text" id="f_publisher" placeholder="Издательство" value="${escapeHtml(book?.publisher || '')}" />
+          <input type="text" id="f_year" placeholder="Год издания" value="${escapeHtml(book?.year || '')}" />
+        </div>
+
+        <div class="form-row">
+          <input type="text" id="f_language" placeholder="Язык" value="${escapeHtml(book?.language || 'Арабский')}" />
+          <input type="text" id="f_cover" placeholder="Ссылка на обложку" value="${escapeHtml(book?.cover || '')}" />
+        </div>
+
+        <select id="f_type">
+          <option value="Шиитская" ${book?.type === 'Шиитская' ? 'selected' : ''}>Шиитская</option>
+          <option value="Суннитская" ${book?.type === 'Суннитская' ? 'selected' : ''}>Суннитская</option>
+        </select>
+
+        <textarea id="f_description" placeholder="Описание книги">${escapeHtml(book?.description || '')}</textarea>
+
+        <input type="text" id="f_link" placeholder="Основная ссылка на книгу (Archive.org и т.д.)" value="${escapeHtml(book?.link || '')}" />
+
+        <div>
+          <label style="display:block;margin-bottom:6px;font-weight:600;font-size:15px;">📂 Тома</label>
+          <div id="volumesContainer">
+            ${volumesHTML}
+          </div>
+          <button type="button" class="btn-add-volume" onclick="addVolumeField()">+ Добавить том</button>
+        </div>
+      `;
+    }
+
+    function addVolumeField() {
+      const container = document.getElementById('volumesContainer');
+      const div = document.createElement('div');
+      div.className = 'volume-group';
+      div.innerHTML = `
+        <input type="text" placeholder="Название тома" class="vol-title" />
+        <input type="text" placeholder="Ссылка на том" class="vol-link" />
+      `;
+      container.appendChild(div);
+    }
+
+    function openAddBook() {
+      editingId = null;
+      editingType = 'book';
+      document.getElementById('modalTitle').textContent = '➕ Добавить книгу';
+      document.getElementById('modalBody').innerHTML = getBookFormHTML(null);
+      document.getElementById('modal').style.display = 'block';
+    }
+
+    function editBook(id) {
+      const book = books.find((b) => b.id === id);
+      if (!book) return;
+      editingId = id;
+      editingType = 'book';
+      document.getElementById('modalTitle').textContent = '✏️ Редактировать книгу';
+      document.getElementById('modalBody').innerHTML = getBookFormHTML(book);
+      document.getElementById('modal').style.display = 'block';
+    }
+
+    // ============================================================
+    //  ФОРМА: АВТОР
+    // ============================================================
+    function openAddAuthor() {
+      editingId = null;
+      editingType = 'author';
+      document.getElementById('modalTitle').textContent = '➕ Добавить автора';
+      document.getElementById('modalBody').innerHTML = `
+        <input type="text" id="f_authorName" placeholder="Имя автора *" required />
+        <textarea id="f_authorBio" placeholder="Биография автора"></textarea>
+      `;
+      document.getElementById('modal').style.display = 'block';
+    }
+
+    function editAuthor(id) {
+      const author = authors.find((a) => a.id === id);
+      if (!author) return;
+      editingId = id;
+      editingType = 'author';
+      document.getElementById('modalTitle').textContent = '✏️ Редактировать автора';
+      document.getElementById('modalBody').innerHTML = `
+        <input type="text" id="f_authorName" placeholder="Имя автора *" value="${escapeHtml(author.name || '')}" required />
+        <textarea id="f_authorBio" placeholder="Биография автора">${escapeHtml(author.bio || '')}</textarea>
+      `;
+      document.getElementById('modal').style.display = 'block';
+    }
+
+    // ============================================================
+    //  ФОРМА: КАТЕГОРИЯ
+    // ============================================================
+    function openAddCategory() {
+      editingId = null;
+      editingType = 'category';
+      document.getElementById('modalTitle').textContent = '➕ Добавить категорию';
+      document.getElementById('modalBody').innerHTML = `
+        <input type="text" id="f_categoryName" placeholder="Название категории *" required />
+      `;
+      document.getElementById('modal').style.display = 'block';
+    }
+
+    // ============================================================
+    //  СОХРАНЕНИЕ ФОРМЫ
+    // ============================================================
+    document.getElementById('modalForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      try {
+        if (editingType === 'book') {
+          await saveBook();
+        } else if (editingType === 'author') {
+          await saveAuthor();
+        } else if (editingType === 'category') {
+          await saveCategory();
+        }
+      } catch (err) {
+        alert('❌ Ошибка: ' + err.message);
+      }
+    });
+
+    // --- Сохранить книгу ---
+    async function saveBook() {
+      const volumes = [];
+      document.querySelectorAll('.volume-group').forEach((group) => {
+        const title = group.querySelector('.vol-title').value.trim();
+        const link = group.querySelector('.vol-link').value.trim();
+        if (title) volumes.push({ title, link });
+      });
+
+      const data = {
+        title: document.getElementById('f_title').value.trim(),
+        authorId: document.getElementById('f_authorId').value || undefined,
+        author: document.getElementById('f_author').value.trim() || undefined,
+        category: document.getElementById('f_category').value,
+        publisher: document.getElementById('f_publisher').value.trim(),
+        year: document.getElementById('f_year').value.trim(),
+        language: document.getElementById('f_language').value.trim(),
+        cover: document.getElementById('f_cover').value.trim(),
+        type: document.getElementById('f_type').value,
+        description: document.getElementById('f_description').value.trim(),
+        link: document.getElementById('f_link').value.trim(),
+        volumes: volumes,
+      };
+
+      if (!data.title) throw new Error('Название книги обязательно');
+
+      let url = API_URL + '/books';
+      let method = 'POST';
+      if (editingId) {
+        url += '/' + editingId;
+        method = 'PUT';
+      }
+
+      const res = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(err || 'Ошибка сохранения');
+      }
+
+      closeModal();
+      await loadBooks();
+      renderBooks();
+      updateStats();
+    }
+
+    // --- Сохранить автора ---
+    async function saveAuthor() {
+      const data = {
+        name: document.getElementById('f_authorName').value.trim(),
+        bio: document.getElementById('f_authorBio').value.trim(),
+      };
+      if (!data.name) throw new Error('Имя автора обязательно');
+
+      let url = API_URL + '/authors';
+      let method = 'POST';
+      if (editingId) {
+        url += '/' + editingId;
+        method = 'PUT';
+      }
+
+      const res = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(err || 'Ошибка сохранения');
+      }
+
+      closeModal();
+      await loadAuthors();
+      renderAuthors();
+      updateStats();
+    }
+
+    // --- Сохранить категорию ---
+    async function saveCategory() {
+      const name = document.getElementById('f_categoryName').value.trim();
+      if (!name) throw new Error('Название категории обязательно');
+
+      const res = await fetch(API_URL + '/categories', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+        body: JSON.stringify({ name }),
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(err || 'Ошибка добавления');
+      }
+
+      closeModal();
+      await loadCategories();
+      renderCategories();
+      updateStats();
+    }
+
+    // ============================================================
+    //  УДАЛЕНИЕ
+    // ============================================================
+    async function deleteBook(id) {
+      if (!confirm('Удалить эту книгу?')) return;
+      const res = await fetch(API_URL + '/books/' + id, {
+        method: 'DELETE',
+        headers: { Authorization: 'Bearer ' + token },
+      });
+      if (res.ok) {
+        await loadBooks();
+        renderBooks();
+        updateStats();
+      } else {
+        alert('Ошибка удаления');
+      }
+    }
+
+    async function deleteAuthor(id) {
+      if (!confirm('Удалить этого автора?')) return;
+      const res = await fetch(API_URL + '/authors/' + id, {
+        method: 'DELETE',
+        headers: { Authorization: 'Bearer ' + token },
+      });
+      if (res.ok) {
+        await loadAuthors();
+        renderAuthors();
+        updateStats();
+      } else {
+        alert('Ошибка удаления');
+      }
+    }
+
+    async function deleteCategory(name) {
+      if (!confirm('Удалить категорию "' + name + '"?')) return;
+      const res = await fetch(API_URL + '/categories/' + encodeURIComponent(name), {
+        method: 'DELETE',
+        headers: { Authorization: 'Bearer ' + token },
+      });
+      if (res.ok) {
+        await loadCategories();
+        renderCategories();
+        updateStats();
+      } else {
+        alert('Ошибка удаления');
+      }
+    }
+
+    // ============================================================
+    //  ENTER ДЛЯ ВХОДА
+    // ============================================================
+    document.getElementById('passwordInput').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') login();
+    });
+  </script>
+</body>
+</html>
